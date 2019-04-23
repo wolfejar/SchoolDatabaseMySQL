@@ -1,4 +1,4 @@
-# SchoolDatabaseMySQL
+# SchoolDatabaseSQLServer
 SQL Scripts to create data for use with GradePredictionsWithMySQL
 
 ## For use with web application
