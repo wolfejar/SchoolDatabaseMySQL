@@ -46,7 +46,7 @@ CREATE TABLE Institution (
     InstitutionName varchar(64) not null
 );
 
-INSERT INTO Institution (InstitutionId,InstitutionName) VALUES (1,'Kansas State University'),(2,'University of Kansas'),(3,'Wichita State University'),(4,'Emporia State University'),(5,'Fort Hays State University');
+INSERT INTO Institution (InstitutionName) VALUES ('Kansas State University'),('University of Kansas'),('Wichita State University'),('Emporia State University'),('Fort Hays State University');
 
 CREATE TABLE Student (
   StudentId int identity(1,1) primary key NOT NULL,
@@ -70,11 +70,11 @@ CREATE TABLE Instructor (
 );
 
 -- need to fix these entries, InstructorId will auto increment
-INSERT INTO Instructor (InstructorId,FirstName,LastName,IsTenured,YearsTeaching,Degree) VALUES (1000,'Amber','Solomon','0','4',3),(1001,'Cally','Burris','0','4',2),(1002,'Rahim','Swanson','0','5',3),(1003,'Kimberly','Cline','0','3',2),(1004,'Rebekah','Massey','1','6',3),(1005,'Ethan','Osborne','1','4',3),(1006,'Athena','Odonnell','1','7',2),(1007,'Keith','Osborn','1','4',3),(1008,'Kelly','Branch','0','5',3),(1009,'Brynn','Randolph','0','6',2);
-INSERT INTO Instructor (InstructorId,FirstName,LastName,IsTenured,YearsTeaching,Degree) VALUES (1010,'Hoyt','Bradley','1','5',2),(1011,'Chaim','Mays','1','4',3),(1012,'Jamal','Huffman','0','5',3),(1013,'Lois','Glass','0','5',3),(1014,'Olga','Whitney','0','8',3),(1015,'Harriet','Merritt','1','4',2),(1016,'Brooke','Velez','1','5',2),(1017,'Sawyer','Wall','0','6',2),(1018,'Uriah','Kidd','0','5',3),(1019,'Howard','Suarez','0','4',2);
-INSERT INTO Instructor (InstructorId,FirstName,LastName,IsTenured,YearsTeaching,Degree) VALUES (1020,'Robert','Perkins','1','8',3),(1021,'Holmes','Russell','0','5',2),(1022,'Rhiannon','Parker','1','4',2),(1023,'Kelsie','Whitfield','0','5',2),(1024,'Nasim','Cross','1','5',2),(1025,'Orli','Schmidt','1','5',3),(1026,'Rashad','Lewis','1','4',3),(1027,'Thane','Anthony','0','6',3),(1028,'Linda','Levy','1','4',3),(1029,'Warren','Bender','0','4',3);
-INSERT INTO Instructor (InstructorId,FirstName,LastName,IsTenured,YearsTeaching,Degree) VALUES (1030,'Kathleen','Conley','1','6',3),(1031,'Damian','Ewing','1','6',3),(1032,'Avye','Benton','1','6',2),(1033,'James','Watts','0','4',2),(1034,'Zena','Garza','1','6',3),(1035,'Leroy','Shaffer','1','6',3),(1036,'Fitzgerald','Clarke','0','6',3),(1037,'Adam','Holder','0','8',2),(1038,'Tasha','Gardner','1','5',2),(1039,'Chaney','Coleman','0','5',3);
-INSERT INTO Instructor (InstructorId,FirstName,LastName,IsTenured,YearsTeaching,Degree) VALUES (1040,'Yardley','Oliver','0','3',2),(1041,'Dennis','Walter','1','8',2),(1042,'Evan','Lowe','1','4',3),(1043,'Maxwell','Sears','0','4',2),(1044,'Channing','Pugh','0','5',2),(1045,'Aurelia','Johnson','0','6',2),(1046,'Ivana','Donaldson','1','5',2),(1047,'Gregory','Decker','0','6',3),(1048,'Eleanor','Head','1','5',2),(1049,'Tatyana','Mason','0','5',3);
+INSERT INTO Instructor (FirstName,LastName,IsTenured,YearsTeaching,Degree) VALUES ('Amber','Solomon','0','4',3),('Cally','Burris','0','4',2),('Rahim','Swanson','0','5',3),('Kimberly','Cline','0','3',2),('Rebekah','Massey','1','6',3),('Ethan','Osborne','1','4',3),('Athena','Odonnell','1','7',2),('Keith','Osborn','1','4',3),('Kelly','Branch','0','5',3),('Brynn','Randolph','0','6',2);
+INSERT INTO Instructor (FirstName,LastName,IsTenured,YearsTeaching,Degree) VALUES ('Hoyt','Bradley','1','5',2),('Chaim','Mays','1','4',3),('Jamal','Huffman','0','5',3),('Lois','Glass','0','5',3),('Olga','Whitney','0','8',3),('Harriet','Merritt','1','4',2),('Brooke','Velez','1','5',2),('Sawyer','Wall','0','6',2),('Uriah','Kidd','0','5',3),('Howard','Suarez','0','4',2);
+INSERT INTO Instructor (FirstName,LastName,IsTenured,YearsTeaching,Degree) VALUES ('Robert','Perkins','1','8',3),('Holmes','Russell','0','5',2),('Rhiannon','Parker','1','4',2),('Kelsie','Whitfield','0','5',2),('Nasim','Cross','1','5',2),('Orli','Schmidt','1','5',3),('Rashad','Lewis','1','4',3),('Thane','Anthony','0','6',3),('Linda','Levy','1','4',3),('Warren','Bender','0','4',3);
+INSERT INTO Instructor (FirstName,LastName,IsTenured,YearsTeaching,Degree) VALUES ('Kathleen','Conley','1','6',3),('Damian','Ewing','1','6',3),('Avye','Benton','1','6',2),('James','Watts','0','4',2),('Zena','Garza','1','6',3),('Leroy','Shaffer','1','6',3),('Fitzgerald','Clarke','0','6',3),('Adam','Holder','0','8',2),('Tasha','Gardner','1','5',2),('Chaney','Coleman','0','5',3);
+INSERT INTO Instructor (FirstName,LastName,IsTenured,YearsTeaching,Degree) VALUES ('Yardley','Oliver','0','3',2),('Dennis','Walter','1','8',2),('Evan','Lowe','1','4',3),('Maxwell','Sears','0','4',2),('Channing','Pugh','0','5',2),('Aurelia','Johnson','0','6',2),('Ivana','Donaldson','1','5',2),('Gregory','Decker','0','6',3),('Eleanor','Head','1','5',2),('Tatyana','Mason','0','5',3);
 
 
 CREATE TABLE CourseStudent (
