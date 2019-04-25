@@ -9,7 +9,13 @@ DROP TABLE IF EXISTS Course;
 DROP TABLE IF EXISTS CourseType;
 DROP TABLE IF EXISTS Activity;
 DROP TABLE IF EXISTS Institution;
-
+/*
+Select SUM(C.CreditHours) as TotalCreditHours, S.GPA, S.OnCampus, S.IsWorking
+            from CourseStudent CS
+            join Course C on C.CourseId = CS.CourseId
+            join Student S on S.StudentId = CS.StudentId
+            group by S.StudentId, S.GPA, S.OnCampus, S.IsWorking
+*/
 CREATE TABLE Institution (
 	InstitutionId int Identity(1,1) not null primary key,
   InstitutionName varchar(64) not null
@@ -78,30 +84,35 @@ CREATE TABLE ActivityStudent (
   FOREIGN KEY (ActivityId) REFERENCES Activity(ActivityId)
 );
 
-/*
- Update course grades for each student to follow realistic pattern based on other attributes
-SET SQL_SAFE_UPDATES = 0;
-UPDATE CourseStudent CS
-SET CS.GradePercentage = (
+/* Update course grades for each student to follow realistic pattern based on other attributes */
+UPDATE Final
+SET Final.GradePercentage = (
 	select (
         ABS(
-        (info.GPA / 4 * 100) /* 100% baseline w/ 4.0
-        + (5 * info.OnCampus) - (3 * info.IsWorking) - (C.CourseLevel / 1000) - (0.2 * C.CreditHours)
-        + (5 * coalesce(AST.HasPosition, 0)) - (0.2 * info.TotalCreditHours)
+        (info.GPA / 4 * 100) -- 100% baseline w/ 4.0
+        + (5 * info.OnCampus) - (3 * info.IsWorking) - (info.CourseLevel / 1000) - (0.2 * info.CreditHours)
+        + (5 * info.HasPosition) - (0.2 * info.TotalCreditHours)
         )
-    )
-
-    from (Select * from CourseStudent) as CS2
-	join (
-		Select S.StudentId, SUM(C.CreditHours) as TotalCreditHours,
-		S.GPA, S.OnCampus, S.IsWorking
-		from CourseStudent CS
-		join Course C on C.CourseId = CS.CourseId
-		join Student S on S.StudentId = CS.StudentId
-		group by S.StudentId
-	) as info on info.StudentId = CS2.StudentID
-    join Course C on C.CourseId = CS2.CourseId
-    left join ActivityStudent AST on AST.StudentId = CS2.StudentId
-    where cs2.studentId = cs.studentId and cs2.courseid = cs.courseid
+  )
+  from (
+    SELECT temp.CourseId, temp.StudentId, temp.GradePercentage, temp.TotalCreditHours, temp.GPA, temp.OnCampus, temp.IsWorking,
+    temp.CourseLevel, temp.CreditHours, temp.HasPosition 
+    from CourseStudent CS
+    inner join (
+      Select CS2.CourseId, CS2.StudentId, CS2.GradePercentage, info.TotalCreditHours, S.GPA, S.OnCampus, S.IsWorking,
+      C.CourseLevel, C.CreditHours, (CASE WHEN EXISTS((SELECT 1 FROM ActivityStudent WHERE HasPosition = 1)) THEN 1 ELSE 0 END) as HasPosition
+      from CourseStudent CS2
+	    join (
+		    Select S.StudentId, SUM(C.CreditHours) as TotalCreditHours
+		    from CourseStudent CS
+		    join Course C on C.CourseId = CS.CourseId
+		    join Student S on S.StudentId = CS.StudentId
+		    group by S.StudentId
+	    ) as info on info.StudentId = CS2.StudentID
+      join Student S on S.StudentId = CS2.StudentId
+      join Course C on C.CourseId = CS2.CourseId --ActivityStudent AST on AST.StudentId = CS2.StudentId -- returning multiple activites per student!
+    ) as temp on temp.StudentId = CS.StudentId and temp.CourseId = CS.CourseId) as info
+  where info.StudentId = Final.StudentId and info.CourseId = Final.CourseId
 )
-WHERE !isnull(cs.studentId) */
+From CourseStudent Final
+WHERE (Final.StudentId) IS NOT NULL;
