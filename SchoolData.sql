@@ -1,14 +1,19 @@
 use CollegeStateUniversity;
 
 DROP TABLE IF EXISTS ActivityStudent;
+DROP TABLE IF EXISTS CourseInstructor;
 DROP TABLE IF EXISTS CourseStudent;
 DROP TABLE IF EXISTS Student;
+DROP TABLE IF EXISTS Instructor;
 DROP TABLE IF EXISTS Course;
 DROP TABLE IF EXISTS CourseType;
 DROP TABLE IF EXISTS Activity;
 DROP TABLE IF EXISTS Institution;
-DROP TABLE IF EXISTS Instructor;
 
+CREATE TABLE Institution (
+	InstitutionId int Identity(1,1) not null primary key,
+  InstitutionName varchar(64) not null
+);
 
 CREATE TABLE Activity (
   ActivityId int NOT NULL Identity(1,1) PRIMARY KEY,
@@ -17,7 +22,7 @@ CREATE TABLE Activity (
 
 CREATE TABLE CourseType (
 	CourseTypeId int Identity(1,1) NOT NULL Primary Key,
-    CourseTypeName varchar(64) NOT NULL UNIQUE
+  CourseTypeName varchar(64) NOT NULL UNIQUE,
 );
 
 CREATE TABLE Course (
@@ -29,11 +34,6 @@ CREATE TABLE Course (
 );
 
 
-CREATE TABLE Institution (
-	InstitutionId int Identity(1,1) not null primary key,
-    InstitutionName varchar(64) not null
-);
-
 CREATE TABLE Student (
   StudentId int identity(1,1) primary key NOT NULL,
   HashedPass varchar(256) not null,
@@ -42,7 +42,8 @@ CREATE TABLE Student (
   OnCampus int NOT NULL,
   IsWorking int NOT NULL,
   GPA float NOT NULL,
-  Email varchar(64) not null unique
+  Email varchar(64) not null unique,
+  InstitutionId int not null FOREIGN KEY REFERENCES Institution(InstitutionId)
 );
 
 CREATE TABLE Instructor (
@@ -57,7 +58,7 @@ CREATE TABLE Instructor (
 CREATE TABLE CourseStudent (
   CourseId int NOT NULL,
   StudentId int NOT NULL,
-  GradePercentage int NOT NULL,
+  GradePercentage float NOT NULL,
   FOREIGN KEY (CourseId) REFERENCES Course (CourseId),
   FOREIGN KEY (StudentId) REFERENCES Student (StudentId)
 );
