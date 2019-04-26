@@ -9,13 +9,7 @@ DROP TABLE IF EXISTS Course;
 DROP TABLE IF EXISTS CourseType;
 DROP TABLE IF EXISTS Activity;
 DROP TABLE IF EXISTS Institution;
-/*
-Select SUM(C.CreditHours) as TotalCreditHours, S.GPA, S.OnCampus, S.IsWorking
-            from CourseStudent CS
-            join Course C on C.CourseId = CS.CourseId
-            join Student S on S.StudentId = CS.StudentId
-            group by S.StudentId, S.GPA, S.OnCampus, S.IsWorking
-*/
+
 CREATE TABLE Institution (
 	InstitutionId int Identity(1,1) not null primary key,
   InstitutionName varchar(64) not null
@@ -84,14 +78,26 @@ CREATE TABLE ActivityStudent (
   FOREIGN KEY (ActivityId) REFERENCES Activity(ActivityId)
 );
 
+SELECT S.OnCampus, S.IsWorking, S.GPA, CS.GradePercentage, AST.HasPosition, C.CourseDept
+FROM Institution I
+JOIN Student S on S.InstitutionId = I.InstitutionId
+JOIN ActivityStudent AST on AST.StudentId = S.StudentId
+JOIN CourseStudent CS on CS.StudentId = S.StudentId
+JOIN Course C on C.CourseId = CS.CourseId
+WHERE I.InstitutionId = 1
+
+SELECT (RAND()*(-30) + RAND()*30)
+
+SELECT *
+FROM CourseStudent
 /* Update course grades for each student to follow realistic pattern based on other attributes */
 UPDATE Final
 SET Final.GradePercentage = (
 	select (
         ABS(
         (info.GPA / 4 * 100) -- 100% baseline w/ 4.0
-        + (5 * info.OnCampus) - (3 * info.IsWorking) - (info.CourseLevel / 1000) - (0.2 * info.CreditHours)
-        + (5 * info.HasPosition) - (0.2 * info.TotalCreditHours)
+        + (5 * info.OnCampus) - (5 * info.IsWorking) - (info.CourseLevel / 1000) - (0.1 * info.CreditHours)
+        + (7 * info.HasPosition) - (0.2 * info.TotalCreditHours) + CHECKSUM(NewId()) % 6-- add some randomness
         )
   )
   from (
