@@ -78,18 +78,6 @@ CREATE TABLE ActivityStudent (
   FOREIGN KEY (ActivityId) REFERENCES Activity(ActivityId)
 );
 
-SELECT S.OnCampus, S.IsWorking, S.GPA, CS.GradePercentage, AST.HasPosition, C.CourseDept
-FROM Institution I
-JOIN Student S on S.InstitutionId = I.InstitutionId
-JOIN ActivityStudent AST on AST.StudentId = S.StudentId
-JOIN CourseStudent CS on CS.StudentId = S.StudentId
-JOIN Course C on C.CourseId = CS.CourseId
-WHERE I.InstitutionId = 1
-
-SELECT (RAND()*(-30) + RAND()*30)
-
-SELECT *
-FROM CourseStudent
 /* Update course grades for each student to follow realistic pattern based on other attributes */
 UPDATE Final
 SET Final.GradePercentage = (
